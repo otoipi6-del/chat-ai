@@ -2,13 +2,15 @@
 // НАСТРОЙКИ И ДАННЫЕ ПРОВАЙДЕРОВ
 // ==========================================
 const PROXY_URL = "https://chat-ai-proxy.otoipi6.workers.dev";
-const GROQ_GAS_URL = "https://script.google.com/macros/s/AKfycbxP2fjnGgAPBezXQQpnVzLPJwjGVVB-POlL942mxAGxeBpYgkeroacf3FPNhXwBWuXu8A/exec"; // НЕ ЗАБУДЬ ВСТАВИТЬ СВОЙ URL!
+const GROQ_GAS_URL = "https://script.google.com/macros/s/ТВОЙ_ID/exec"; // НЕ ЗАБУДЬ ВСТАВИТЬ СВОЙ URL!
 
-const PROVIDER_MODELS = {
-  groq: ['openai/gpt-oss-120b', 'openai/gpt-oss-20b'],
-  deepseek: ['deepseek-chat', 'deepseek-reasoner'],
-  openrouter: ['openrouter/free', 'nvidia/nemotron-3-super-120b-a12b:free', 'google/gemma-4-31b-it:free']
-};
+// Единый список: платформа + модель
+const MODELS_LIST = [
+  { provider: 'openrouter', model: 'nvidia/nemotron-3-ultra-550b-a55b:free', label: 'Openrouter — nvidia/nemotron-3-ultra-550b-a55b:free' },
+  { provider: 'groq', model: 'openai/gpt-oss-120b', label: 'Groq — openai/gpt-oss-120b' },
+  { provider: 'groq', model: 'openai/gpt-oss-20b', label: 'Groq — openai/gpt-oss-20b' },
+  { provider: 'deepseek', model: 'deepseek-chat', label: 'Deepseek — deepseek-chat' }
+];
 
 // ==========================================
 // DOM ЭЛЕМЕНТЫ
@@ -17,8 +19,7 @@ const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 const messagesContainer = document.getElementById('messagesContainer');
 const typingIndicator = document.getElementById('typingIndicator');
-const providerSelect = document.getElementById('providerSelect');
-const modelSelect = document.getElementById('modelSelect');
+const modelSelector = document.getElementById('modelSelector');
 const welcomeScreen = document.getElementById('welcomeScreen');
 const sidebar = document.getElementById('sidebar');
 const openSidebarBtn = document.getElementById('openSidebarBtn');
@@ -35,29 +36,21 @@ let isGenerating = false;
 let abortController = null;
 
 // ==========================================
-// ЛОГИКА ВЫПАДАЮЩИХ СПИСКОВ
+// ЗАПОЛНЕНИЕ ЕДИНОГО СПИСКА МОДЕЛЕЙ
 // ==========================================
 function updateModelList() {
-  if (!providerSelect || !modelSelect) return;
-  const provider = providerSelect.value;
-  const models = PROVIDER_MODELS[provider] || [];
-  modelSelect.innerHTML = '';
-  models.forEach(model => {
+  if (!modelSelector) return;
+  modelSelector.innerHTML = '';
+  MODELS_LIST.forEach(item => {
     const option = document.createElement('option');
-    option.value = model;
-    option.textContent = model;
-    modelSelect.appendChild(option);
+    option.value = `${item.provider}|${item.model}`; // Храним провайдер и модель через разделитель
+    option.textContent = item.label;
+    modelSelector.appendChild(option);
   });
 }
 
-if (providerSelect) {
-  providerSelect.value = "groq"; 
-  providerSelect.addEventListener('change', updateModelList);
-  updateModelList(); 
-  
-  if (modelSelect && modelSelect.options.length > 0) {
-    modelSelect.selectedIndex = 0; 
-  }
+if (modelSelector) {
+  updateModelList();
 }
 
 // ==========================================
@@ -417,8 +410,10 @@ async function sendMessage() {
   abortController = new AbortController();
 
   try {
-    const selectedProvider = providerSelect ? providerSelect.value : 'groq';
-    const selectedModel = modelSelect ? modelSelect.value : 'openai/gpt-oss-120b';
+    // Получаем выбранный провайдер и модель из единого списка
+    const selectedValue = modelSelector ? modelSelector.value : 'groq|openai/gpt-oss-120b';
+    const [selectedProvider, selectedModel] = selectedValue.split('|');
+    
     const currentChat = chats.find(c => c.id === currentChatId);
     const contextMessages = currentChat.messages.map(m => ({
       role: m.sender === 'user' ? 'user' : 'assistant',
