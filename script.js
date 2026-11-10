@@ -2,7 +2,7 @@
 // НАСТРОЙКИ И ДАННЫЕ ПРОВАЙДЕРОВ
 // ==========================================
 const PROXY_URL = "https://chat-ai-proxy.otoipi6.workers.dev";
-const GROQ_GAS_URL = "https://script.google.com/macros/s/AKfycbxP2fjnGgAPBezXQQpnVzLPJwjGVVB-POlL942mxAGxeBpYgkeroacf3FPNhXwBWuXu8A/exec"; // НЕ ЗАБУДЬ ВСТАВИТЬ СВОЙ URL!
+const GROQ_GAS_URL = "https://script.google.com/macros/s/ТВОЙ_ID/exec"; // НЕ ЗАБУДЬ ВСТАВИТЬ СВОЙ URL!
 
 // Единый список: платформа + модель
 const MODELS_LIST = [
@@ -30,6 +30,7 @@ const attachBtn = document.getElementById('attachBtn');
 const fileInput = document.getElementById('fileInput');
 const micBtn = document.getElementById('micBtn');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
+const scrollToTopBtn = document.getElementById('scrollToTopBtn');
 
 // Переменные для управления запросом
 let isGenerating = false;
@@ -51,6 +52,23 @@ function updateModelList() {
 
 if (modelSelector) {
   updateModelList();
+}
+
+// ==========================================
+// ЛОГИКА КНОПКИ "НАВЕРХ"
+// ==========================================
+if (messagesContainer && scrollToTopBtn) {
+  messagesContainer.addEventListener('scroll', () => {
+    if (messagesContainer.scrollTop > 300) {
+      scrollToTopBtn.classList.add('show');
+    } else {
+      scrollToTopBtn.classList.remove('show');
+    }
+  });
+
+  scrollToTopBtn.addEventListener('click', () => {
+    messagesContainer.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 
 // ==========================================
@@ -219,6 +237,7 @@ function clearMessagesUI() {
   const messages = messagesContainer.querySelectorAll('.message-wrapper');
   messages.forEach(msg => msg.remove());
   if (welcomeScreen) welcomeScreen.style.display = 'flex';
+  if (scrollToTopBtn) scrollToTopBtn.classList.remove('show');
 }
 
 // ==========================================
