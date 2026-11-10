@@ -50,18 +50,12 @@
   <!-- Основная область справа -->
   <div class="main-content">
     
-    <!-- Шапка -->
+    <!-- Шапка (теперь без списка моделей) -->
     <div class="chat-header">
       <div class="chat-header-left">
         <div class="chat-title">chat-ai</div>
       </div>
       <div class="chat-header-right">
-        <!-- ПОДПИСЬ И ОБЪЕДИНЕННЫЙ СПИСОК -->
-        <label for="modelSelector" class="model-label">Модель ИИ:</label>
-        <select id="modelSelector" class="provider-select">
-          <!-- Опции будут заполняться через JS -->
-        </select>
-        
         <button class="theme-toggle-btn" id="themeToggleBtn" title="Переключить тему">
           <i class="fas fa-moon"></i>
         </button>
@@ -70,6 +64,14 @@
           <i class="fas fa-bars"></i>
         </button>
       </div>
+    </div>
+
+    <!-- ПАНЕЛЬ С МОДЕЛЬЮ (ПРИЖАТА ВПРАВО) -->
+    <div class="model-panel">
+      <label for="modelSelector" class="model-label">Модель ИИ:</label>
+      <select id="modelSelector" class="provider-select">
+        <!-- Опции будут заполняться через JS -->
+      </select>
     </div>
 
     <!-- Сообщения -->
