@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chat-ai</title>
   
-  <link rel="icon" type="image/svg+xml" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
-  <link rel="android-chrome" sizes="192x192" href="favicon.png">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  <link rel="android-chrome" sizes="192x192" href="favicon.svg">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
@@ -56,13 +56,9 @@
         <div class="chat-title">chat-ai</div>
       </div>
       <div class="chat-header-right">
-        <select id="providerSelect" class="provider-select">
-          <option value="groq">Groq</option>
-          <option value="deepseek">DeepSeek</option>
-          <option value="openrouter">OpenRouter</option>
-        </select>
-        <select id="modelSelect" class="provider-select">
-          <!-- Заполняется через JS -->
+        <!-- ОБЪЕДИНЕННЫЙ СПИСОК (ПЛАТФОРМА + МОДЕЛЬ) -->
+        <select id="modelSelector" class="provider-select">
+          <!-- Опции будут заполняться через JS -->
         </select>
         
         <button class="theme-toggle-btn" id="themeToggleBtn" title="Переключить тему">
