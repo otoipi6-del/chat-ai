@@ -56,7 +56,8 @@
         <div class="chat-title">chat-ai</div>
       </div>
       <div class="chat-header-right">
-        <!-- ОБЪЕДИНЕННЫЙ СПИСОК (ПЛАТФОРМА + МОДЕЛЬ) -->
+        <!-- ПОДПИСЬ И ОБЪЕДИНЕННЫЙ СПИСОК -->
+        <label for="modelSelector" class="model-label">Модель ИИ:</label>
         <select id="modelSelector" class="provider-select">
           <!-- Опции будут заполняться через JS -->
         </select>
@@ -94,6 +95,11 @@
         <div class="typing-dot"></div>
       </div>
     </div>
+
+    <!-- КНОПКА "НАВЕРХ" -->
+    <button class="scroll-to-top" id="scrollToTopBtn" title="Наверх">
+      <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Поле ввода (ДВЕ РАМКИ) -->
     <div class="input-container">
